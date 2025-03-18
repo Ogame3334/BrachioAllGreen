@@ -11,9 +11,9 @@ public class LuYiSeObjectLabelRenderer : MonoBehaviour
     [SerializeField]
     private WebCamTextureManager _webCamTextureManager;
     [SerializeField]
-    private GameObject _labelPrefab;
-    [SerializeField]
     private EnvironmentRaycastManager _environmentRaycastManager;
+    [SerializeField]
+    private LabelObjectPool _labelObjectPool;
 
     private List<GameObject> _viewingObjects = new List<GameObject>();
 
@@ -23,7 +23,6 @@ public class LuYiSeObjectLabelRenderer : MonoBehaviour
 
     void Awake()
     {
-        if(!_labelPrefab.TryGetComponent<TextMeshPro>(out var _)) throw new NullReferenceException();
         _mainCamera = Camera.main;
     }
 
@@ -61,8 +60,10 @@ public class LuYiSeObjectLabelRenderer : MonoBehaviour
 
             markerWorldPos -= hmvMoveDiff.position;
             var depth = Vector3.Distance(_mainCamera.transform.position, markerWorldPos);
-            var labelObj = Instantiate(_labelPrefab, markerWorldPos, Quaternion.identity);
-            labelObj.transform.localScale /= depth + 1;
+            var labelObj = LabelObjectPool.GetLabelObject();
+            labelObj.transform.position = markerWorldPos;
+            // var labelObj = Instantiate(_labelPrefab, markerWorldPos, Quaternion.identity);
+            labelObj.transform.localScale = Vector3.one / (depth + 1);
             labelObj.GetComponent<TextMeshPro>().text = renderableLabel.label;
             _viewingObjects.Add(labelObj);
         }
@@ -71,7 +72,7 @@ public class LuYiSeObjectLabelRenderer : MonoBehaviour
     private void ClearViewingObjects(){
         foreach(var obj in _viewingObjects){
             if(obj && obj.gameObject){
-                Destroy(obj);
+                obj.SetActive(false);
             }
         }
         _viewingObjects.Clear();
