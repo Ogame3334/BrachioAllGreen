@@ -32,7 +32,18 @@ public class LuYiSeObjectDetector : MonoBehaviour
         }
         LoadModel();
 
+        gameObject.SetActive(false);
+    }
+
+    void OnEnable()
+    {
         _inferenceCoroutine = StartCoroutine(CoInferenceLoop());
+    }
+
+    void OnDisable()
+    {
+        StopCoroutine(_inferenceCoroutine);
+        _inferenceCoroutine = null;
     }
 
     private void OnDestroy()
