@@ -27,7 +27,7 @@ public class LuYiSeObjectLabelRenderer : MonoBehaviour
         _mainCamera = Camera.main;
     }
 
-    public void RenderLabel(RenderableLabelInfo[] renderableLabels){
+    public void RenderLabel(RenderableLabelInfo[] renderableLabels, HMVMoveDiff hmvMoveDiff){
         ClearViewingObjects();
 
         var intrinsics = PassthroughCameraUtils.GetCameraIntrinsics(_webCamTextureManager.eye);
@@ -54,6 +54,12 @@ public class LuYiSeObjectLabelRenderer : MonoBehaviour
             }
 
             var markerWorldPos = centerHit.point;
+
+            markerWorldPos -= _mainCamera.transform.position;
+            markerWorldPos = Quaternion.Inverse(hmvMoveDiff.rotation) * markerWorldPos;
+            markerWorldPos += _mainCamera.transform.position;
+
+            markerWorldPos -= hmvMoveDiff.position;
             var depth = Vector3.Distance(_mainCamera.transform.position, markerWorldPos);
             var labelObj = Instantiate(_labelPrefab, markerWorldPos, Quaternion.identity);
             labelObj.transform.localScale /= depth + 1;

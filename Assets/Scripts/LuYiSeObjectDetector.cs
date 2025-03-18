@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using PassthroughCameraSamples;
 using TMPro;
@@ -18,11 +17,15 @@ public class LuYiSeObjectDetector : MonoBehaviour
     private Texture2D _texture;
     private Coroutine _inferenceCoroutine;
     private float inferenceInterval = 0.1f;
+    private Camera _mainCamera;
+    private Vector3 _diffPosition;
+    private Quaternion _diffRotation;
 
     [SerializeField] private TextMeshProUGUI textMesh;
     
     void Start()
     {
+        _mainCamera = Camera.main;
         _webcamTexture = _webCamTextureManager.WebCamTexture;
         if(_webcamTexture){
             _texture = new Texture2D(_webcamTexture.width, _webcamTexture.height, TextureFormat.RGBA32, false);
@@ -67,6 +70,8 @@ public class LuYiSeObjectDetector : MonoBehaviour
 
             _texture.SetPixels(_webcamTexture.GetPixels());
             _texture.Apply();
+            _diffPosition = _mainCamera.transform.position;
+            _diffRotation = _mainCamera.transform.rotation;
 
             yield return StartCoroutine(CoInferenceObject(_texture));
         }
@@ -151,10 +156,16 @@ public class LuYiSeObjectDetector : MonoBehaviour
                                             )
                                             .ToArray();
 
-                    _luYiSeObjectLabelRenderer.RenderLabel(renderableLabels);
+                    Transform mainCameraTransform = _mainCamera.transform;
+                    
+                    _diffPosition = mainCameraTransform.position - _diffPosition;
+                    _diffRotation = Quaternion.Inverse(_diffRotation) * mainCameraTransform.rotation;
+                    _luYiSeObjectLabelRenderer.RenderLabel(renderableLabels, new HMVMoveDiff(){position = _diffPosition, rotation = _diffRotation});
 
 
-                    textMesh.text += string.Join('\n', renderableLabels.Select(rl => $"{rl.label}: {rl.position}"));
+                    // textMesh.text += string.Join('\n', renderableLabels.Select(rl => $"{rl.label}: {rl.position}"));
+                    textMesh.text = $"HMV Position: {_mainCamera.transform.position}, Rotation: {_mainCamera.transform.rotation.eulerAngles}\n";
+                    textMesh.text += $"position: {_diffPosition}, rotation: {_diffRotation.eulerAngles}";
 
                     downloadState = 3;
                     break;
