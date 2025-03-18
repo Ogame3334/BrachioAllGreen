@@ -93,11 +93,11 @@ public class LuYiSeObjectDetector : MonoBehaviour
         Tensor<float> coordResults = null;
         Tensor<int> labelIDResults = null;
 
-        int downlaodState = 0;
+        int downloadState = 0;
         bool isWating = false;
 
         while(true){
-            switch(downlaodState){
+            switch(downloadState){
                 case 0:
                     if(pullCoords?.dataOnBackend == null){
                         inputTensor.Dispose();
@@ -110,7 +110,7 @@ public class LuYiSeObjectDetector : MonoBehaviour
                     else if(pullCoords.IsReadbackRequestDone()){
                         coordResults = pullCoords.ReadbackAndClone();
                         isWating = false;
-                        ++downlaodState;
+                        ++downloadState;
                     }
                     break;
 
@@ -127,7 +127,7 @@ public class LuYiSeObjectDetector : MonoBehaviour
                     else if(pullLabelIDs.IsReadbackRequestDone()){
                         labelIDResults = pullLabelIDs.ReadbackAndClone();
                         isWating = false;
-                        ++downlaodState;
+                        ++downloadState;
                     }
                     break;
                 
@@ -156,7 +156,7 @@ public class LuYiSeObjectDetector : MonoBehaviour
 
                     textMesh.text += string.Join('\n', renderableLabels.Select(rl => $"{rl.label}: {rl.position}"));
 
-                    downlaodState = 3;
+                    downloadState = 3;
                     break;
 
                 case 3:
