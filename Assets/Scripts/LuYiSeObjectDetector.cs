@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using PassthroughCameraSamples;
 using TMPro;
 using Unity.Sentis;
@@ -9,6 +11,7 @@ public class LuYiSeObjectDetector : MonoBehaviour
     [SerializeField] private ModelAsset _modelAsset;
     [SerializeField] private BackendType _backendType = BackendType.CPU;
     [SerializeField] private WebCamTextureManager _webCamTextureManager;
+    [SerializeField] private LuYiSeObjectLabelRenderer _luYiSeObjectLabelRenderer;
     private Model _model;
     private Worker _worker;
     private WebCamTexture _webcamTexture;
@@ -130,15 +133,29 @@ public class LuYiSeObjectDetector : MonoBehaviour
                 
                 case 2:
                     textMesh.text = "";
-                    for(int i = 0; i < coordResults.shape[0]; ++i){
-                        float[] coords = coordResults.DownloadToArray();
-                        int[] labelIDs = labelIDResults.DownloadToArray();
 
-                        string label = EnumToString.Enum2String<YoloClasses>(labelIDs[i]);
-                        string coordStr = $"{coords[i * 4]}, {coords[i * 4 + 1]}, {coords[i * 4 + 2]}, {coords[i * 4 + 3]}";
+                    float[] coords = coordResults.DownloadToArray();
+                    int[] labelIDs = labelIDResults.DownloadToArray();
+                    
+                    var renderableLabels = coords
+                                            .Select((c, i) => new {c, i})
+                                            .GroupBy(x => x.i / 4)
+                                            .Select(g => g.Select(x => x.c)
+                                                            .ToArray())
+                                            .Select((ga, i) => new {v = new Vector2(ga[0], ga[1]), i})
+                                            .Join(
+                                                labelIDs.Select((l, i) => new {l, i}), 
+                                                li => li.i, 
+                                                vi => vi.i, 
+                                                (vi, li) => new RenderableLabelInfo(){label = EnumToString.Enum2String<YoloClasses>(li.l), position = vi.v}
+                                            )
+                                            .ToArray();
 
-                        textMesh.text += $"{label}: {coordStr}\n";
-                    }
+                    _luYiSeObjectLabelRenderer.RenderLabel(renderableLabels);
+
+
+                    textMesh.text += string.Join('\n', renderableLabels.Select(rl => $"{rl.label}: {rl.position}"));
+
                     downlaodState = 3;
                     break;
 

@@ -161,7 +161,7 @@ GameObject:
   - component: {fileID: 245972748}
   - component: {fileID: 245972750}
   - component: {fileID: 245972749}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -473,7 +473,7 @@ GameObject:
   - component: {fileID: 607175412}
   - component: {fileID: 607175411}
   - component: {fileID: 607175410}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -680,6 +680,8 @@ GameObject:
   m_Component:
   - component: {fileID: 835843882}
   - component: {fileID: 835843881}
+  - component: {fileID: 835843883}
+  - component: {fileID: 835843884}
   m_Layer: 0
   m_Name: ObjectDetector
   m_TagString: Untagged
@@ -702,6 +704,7 @@ MonoBehaviour:
   _modelAsset: {fileID: 5022602860645237092, guid: da16ae22fb68fc74497cac239f6fc9a0, type: 3}
   _backendType: 512
   _webCamTextureManager: {fileID: 796536392}
+  _luYiSeObjectLabelRenderer: {fileID: 835843883}
   textMesh: {fileID: 245972749}
 --- !u!4 &835843882
 Transform:
@@ -718,6 +721,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &835843883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835843880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 322448d292f8fdd439cd3d80064ac1f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _webCamTextureManager: {fileID: 796536392}
+  _labelPrefab: {fileID: 4423657654351954336, guid: 5ff13e7f237da0649a0458fec95afbd6, type: 3}
+  _environmentRaycastManager: {fileID: 835843884}
+--- !u!114 &835843884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835843880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d8affdff7ba47d892cc734baac9ac71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &979651629
 GameObject:
   m_ObjectHideFlags: 0
@@ -1000,7 +1030,7 @@ MonoBehaviour:
   colorMapEditorGradient:
     serializedVersion: 2
     key0: {r: 0, g: 0, b: 0, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 0, g: 0, b: 0, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -1024,7 +1054,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_ColorSpace: -1
+    m_ColorSpace: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   colorMapEditorContrast: 0
@@ -1038,7 +1068,7 @@ MonoBehaviour:
   serializedSurfaceGeometry: []
   textureOpacity_: 1
   edgeRenderingEnabled_: 0
-  edgeColor_: {r: 1, g: 1, b: 1, a: 1}
+  edgeColor_: {r: 0.8, g: 1, b: 0, a: 1}
   colorMapType: 0
 --- !u!114 &1057261112
 MonoBehaviour:
