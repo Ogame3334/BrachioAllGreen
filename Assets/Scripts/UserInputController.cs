@@ -43,7 +43,7 @@ public class UserInputController : MonoBehaviour
             _isGripping = false;
         }
 
-        if(OVRInput.GetDown(OVRInput.Button.Two) && _hand == Hand.Right){
+        if(OVRInput.GetDown(OVRInput.Button.Two, OVRInput.Controller.RTouch) && _hand == Hand.Right){
             bool toCond = !_qvPenObject.activeSelf;
             _qvPenObject.SetActive(toCond);
             if(toCond){
@@ -53,7 +53,7 @@ public class UserInputController : MonoBehaviour
                 );
             }
         }
-        if(OVRInput.GetDown(OVRInput.Button.Two) && _hand == Hand.Left){
+        if(OVRInput.GetDown(OVRInput.Button.Two, OVRInput.Controller.LTouch) && _hand == Hand.Left){
             _objectDetector.SetActive(!_objectDetector.activeSelf);
         }
 
