@@ -142,7 +142,7 @@ public class LuYiSeObjectDetector : MonoBehaviour
                                             .GroupBy(x => x.i / 4)
                                             .Select(g => g.Select(x => x.c)
                                                             .ToArray())
-                                            .Select((ga, i) => new {v = new Vector2(ga[0] + ga[2]/2, ga[1] + ga[3]/2), i})
+                                            .Select((ga, i) => new {v = new Vector2(ga[0], ga[1]), i})
                                             .Join(
                                                 labelIDs.Select((l, i) => new {l, i}), 
                                                 li => li.i, 
