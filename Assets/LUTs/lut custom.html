@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LUT GENERATOR</title>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <script>
+      const lerp = function (start, end, t) {
+        return start * (1 - t) + end * t;
+      };
+
+      function smax(x, y, b) {
+        return (x+y+Math.sqrt((x-y)*(x-y)+b))/2;
+      }
+
+      function rgbToHsv(r, g, b) {
+        (r /= 255), (g /= 255), (b /= 255);
+
+        var max = Math.max(r, g, b),
+          min = Math.min(r, g, b);
+        var h,
+          s,
+          l = (max + min) / 2;
+
+        if (max == min) {
+          h = s = 0;
+        } else {
+          var d = max - min;
+          s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+          switch (max) {
+            case r:
+              h = (g - b) / d + (g < b ? 6 : 0);
+              break;
+            case g:
+              h = (b - r) / d + 2;
+              break;
+            case b:
+              h = (r - g) / d + 4;
+              break;
+          }
+
+          h /= 6;
+        }
+
+        return [h, s, l];
+      }
+
+      window.onload = function () {
+        const img = new Image();
+        img.src =
+          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABAAAAAAgCAIAAAADnJ3xAAAA+ElEQVR4nO3bMQrEMAxFQQVS2Pe/8LbbpNliQ/JmSBEwCCNXH6FjZtbXty/+fzvaM8cs9W+tvx9+/6fX1/931/e++q++931rff1/c//PWQMAAEQIAAAAECIAAABAiAAAAAAh5+y7rwAAAPyLCQAAAIQIAAAAECIAAABAiB0AAAAIMQEAAIAQAQAAAEIEAAAACBEAAAAgxBIwAACEmAAAAECIAAAAACECAAAAhNgBAACAEBMAAAAIEQAAACBEAAAAgBABAAAAQiwBAwBAiAkAAACECAAAABAiAAAAQIgdAAAACDEBAACAEAEAAABCBAAAAAixAwAAACEfi0sie7iR+1kAAAAASUVORK5CYII=";
+        img.onload = function () {
+          const canvas = document.getElementById("canvas");
+          const ctx = canvas.getContext("2d");
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const data = imageData.data;
+
+          for (let i = 0; i < data.length; i += 4) {
+            const r = data[i];
+            const g = data[i + 1];
+            const b = data[i + 2];
+            const [h, s, v] = rgbToHsv(r, g, b);
+
+            // const x = g-r/1-b/1.5;
+            // const t = Math.max(0, Math.min(1, (40+x)/50));
+            const x = Math.max(.17-h,h-.4) + (1-s)*v*v*.1;
+            const t = Math.max(0, Math.min(1, .5-x*9));
+
+            [data[i], data[i + 1], data[i + 2]] = [
+              t * r,
+              t * g,//(g*1.2+(r+b)*.1)+.1,
+              t * b,
+            ];
+          }
+
+          ctx.putImageData(imageData, 0, 0);
+        };
+      };
+    </script>
+  </body>
+</html>
