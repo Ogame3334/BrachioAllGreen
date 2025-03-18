@@ -165,7 +165,10 @@ public class LuYiSeObjectDetector : MonoBehaviour
 
                     // textMesh.text += string.Join('\n', renderableLabels.Select(rl => $"{rl.label}: {rl.position}"));
                     textMesh.text = $"HMV Position: {_mainCamera.transform.position}, Rotation: {_mainCamera.transform.rotation.eulerAngles}\n";
-                    textMesh.text += $"position: {_diffPosition}, rotation: {_diffRotation.eulerAngles}";
+                    textMesh.text += $"position: {_diffPosition}, rotation: {_diffRotation.eulerAngles}\n";
+                    textMesh.text += $"LabelObjectPoolLength: {LabelObjectPool.GetPoolLength()}\n";
+                    textMesh.text += $"LabelObjectPoolActiveLength: {LabelObjectPool.GetPoolActiveLength()}\n";
+                    textMesh.text += string.Join(", ", LabelObjectPool.GetLabelNames());
 
                     downloadState = 3;
                     break;

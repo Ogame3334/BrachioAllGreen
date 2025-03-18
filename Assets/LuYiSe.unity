@@ -682,6 +682,7 @@ GameObject:
   - component: {fileID: 835843881}
   - component: {fileID: 835843883}
   - component: {fileID: 835843884}
+  - component: {fileID: 835843885}
   m_Layer: 0
   m_Name: ObjectDetector
   m_TagString: Untagged
@@ -734,8 +735,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _webCamTextureManager: {fileID: 796536392}
-  _labelPrefab: {fileID: 4423657654351954336, guid: 5ff13e7f237da0649a0458fec95afbd6, type: 3}
   _environmentRaycastManager: {fileID: 835843884}
+  _labelObjectPool: {fileID: 835843885}
 --- !u!114 &835843884
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -748,6 +749,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d8affdff7ba47d892cc734baac9ac71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &835843885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835843880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd2f2e2963a611c4c90abb7825e8180d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _labelPrefab: {fileID: 4423657654351954336, guid: 5ff13e7f237da0649a0458fec95afbd6, type: 3}
+  poolSize: 4
 --- !u!1 &979651629
 GameObject:
   m_ObjectHideFlags: 0
