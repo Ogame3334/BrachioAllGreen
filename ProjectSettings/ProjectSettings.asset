@@ -830,7 +830,7 @@ PlayerSettings:
   webGLCloseOnQuit: 0
   webWasm2023: 0
   scriptingDefineSymbols:
-    Android: 
+    Android: ZXING_ENABLED
     EmbeddedLinux: 
     GameCoreScarlett: 
     GameCoreXboxOne: 
@@ -840,11 +840,11 @@ PlayerSettings:
     PS5: 
     QNX: 
     ReservedCFE: 
-    Standalone: 
+    Standalone: ZXING_ENABLED
     VisionOS: 
     Windows Store Apps: 
     XboxOne: 
-    iPhone: 
+    iPhone: ZXING_ENABLED
     tvOS: 
   additionalCompilerArguments: {}
   platformArchitecture: {}
