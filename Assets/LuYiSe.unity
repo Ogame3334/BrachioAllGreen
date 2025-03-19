@@ -1433,7 +1433,7 @@ MonoBehaviour:
   colorMapEditorSaturation: 0
   _colorLutSourceTexture: {fileID: 2800000, guid: f96aec7979a3fd94a8b8d200391cb1c5, type: 3}
   _colorLutTargetTexture: {fileID: 0}
-  _lutWeight: 1
+  _lutWeight: 0
   _flipLutY: 1
   serializedSurfaceGeometry: []
   textureOpacity_: 1
@@ -1928,6 +1928,7 @@ MonoBehaviour:
   _hand: 1
   _qvPenObject: {fileID: 1872900257}
   _objectDetector: {fileID: 835843880}
+  plem: {fileID: 2040594791}
 --- !u!54 &1508574076
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2190,6 +2191,7 @@ MonoBehaviour:
   _hand: 0
   _qvPenObject: {fileID: 1872900257}
   _objectDetector: {fileID: 835843880}
+  plem: {fileID: 2040594791}
 --- !u!54 &1839312090
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2423,6 +2425,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 664609095}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2040594790
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2040594792}
+  - component: {fileID: 2040594791}
+  m_Layer: 0
+  m_Name: Passthrough Layer Effect Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2040594791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2040594790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34d4e4bfcd8e71f4ab601dd9355b5617, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEffectActive: 0
+  effectWeight: 0
+  passthroughLayer: {fileID: 1057261111}
+  lutTexture: {fileID: 2800000, guid: f96aec7979a3fd94a8b8d200391cb1c5, type: 3}
+--- !u!4 &2040594792
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2040594790}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2435,3 +2485,4 @@ SceneRoots:
   - {fileID: 607175413}
   - {fileID: 1003609005}
   - {fileID: 318246634}
+  - {fileID: 2040594792}
