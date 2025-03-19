@@ -69,7 +69,7 @@ public class LuYiSeObjectLabelRenderer : MonoBehaviour
         }
     }
 
-    private void ClearViewingObjects(){
+    public void ClearViewingObjects(){
         foreach(var obj in _viewingObjects){
             if(obj && obj.gameObject){
                 obj.SetActive(false);

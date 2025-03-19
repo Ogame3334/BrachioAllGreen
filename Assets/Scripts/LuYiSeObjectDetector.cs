@@ -20,6 +20,7 @@ public class LuYiSeObjectDetector : MonoBehaviour
     private Camera _mainCamera;
     private Vector3 _diffPosition;
     private Quaternion _diffRotation;
+    public bool IsActive {get; set;} = false;
 
     [SerializeField] private TextMeshProUGUI textMesh;
     
@@ -32,18 +33,7 @@ public class LuYiSeObjectDetector : MonoBehaviour
         }
         LoadModel();
 
-        gameObject.SetActive(false);
-    }
-
-    void OnEnable()
-    {
         _inferenceCoroutine = StartCoroutine(CoInferenceLoop());
-    }
-
-    void OnDisable()
-    {
-        StopCoroutine(_inferenceCoroutine);
-        _inferenceCoroutine = null;
     }
 
     private void OnDestroy()
@@ -65,6 +55,10 @@ public class LuYiSeObjectDetector : MonoBehaviour
         _worker = new Worker(_model, _backendType);
     }
 
+    public void ClearLabels(){
+        _luYiSeObjectLabelRenderer.ClearViewingObjects();
+    }
+
     private IEnumerator CoInferenceLoop(){
         while(isActiveAndEnabled){
             if(_webcamTexture is null){
@@ -83,6 +77,8 @@ public class LuYiSeObjectDetector : MonoBehaviour
             _texture.Apply();
             _diffPosition = _mainCamera.transform.position;
             _diffRotation = _mainCamera.transform.rotation;
+
+            if(!IsActive) continue;
 
             yield return StartCoroutine(CoInferenceObject(_texture));
         }

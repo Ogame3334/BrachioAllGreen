@@ -25,7 +25,7 @@ public class TextDisplayManager : MonoBehaviour
             Destroy(this);
         }
     }
-    
+
     public static bool WriteTextCenter(string text, float intervalSeconds = 0.1f, bool doClear = true) {
         if(Instance is null) return false;
 
@@ -106,5 +106,9 @@ public class TextDisplayManager : MonoBehaviour
         
         return true;
     }
+    public static bool IsCanWrite(){
+        if(Instance is null) return false;
 
+        return Instance._textDisplayCoroutine == null;
+    }
 }
