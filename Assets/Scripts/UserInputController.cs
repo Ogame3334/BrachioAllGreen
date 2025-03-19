@@ -19,10 +19,13 @@ public class UserInputController : MonoBehaviour
     private GameObject _qvPenObject;
     [SerializeField]
     private GameObject _objectDetector;
+    [SerializeField]
+    public PassthroughLayerEffectManager plem;
     Collider _other = null;
     private PickUpableObject _pickUpableObject = null;
     private bool _isGripping = false;
     private QvPen _qvPen = null;
+    private float triggerPressDuration = 0f;
 
     private void Update()
     {
@@ -30,6 +33,8 @@ public class UserInputController : MonoBehaviour
         bool isGripReleased = _hand == Hand.Left ? OVRInput.GetUp(OVRInput.Button.PrimaryHandTrigger) : OVRInput.GetUp(OVRInput.Button.SecondaryHandTrigger);
         bool isTriggerDowned = _hand == Hand.Left ? OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger) : OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger);
         bool isTriggerReleased = _hand == Hand.Left ? OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger) : OVRInput.GetUp(OVRInput.Button.SecondaryIndexTrigger);
+        bool isTriggerPressed = _hand == Hand.Left ? OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger) : OVRInput.Get(OVRInput.Button.SecondaryIndexTrigger);
+        float prevTriggerPressDuration = triggerPressDuration;
 
         if(isGripDowned){
             if(_other && _other.gameObject.TryGetComponent<PickUpableObject>(out _pickUpableObject)){
@@ -41,6 +46,13 @@ public class UserInputController : MonoBehaviour
             if(_pickUpableObject is not null) _pickUpableObject.ParentObjectTransform = null;
             _pickUpableObject = null;
             _isGripping = false;
+        }
+
+        if(isTriggerPressed){
+            triggerPressDuration += Time.deltaTime;
+        }
+        else{
+            triggerPressDuration = 0f;
         }
 
         if(OVRInput.GetDown(OVRInput.Button.Two, OVRInput.Controller.RTouch) && _hand == Hand.Right){
@@ -78,6 +90,11 @@ public class UserInputController : MonoBehaviour
             if(_other && isTriggerDowned && _other.gameObject.TryGetComponent<IntaractableObject>(out var intaractableObject)){
                 intaractableObject.Intaract();
             }
+        }
+
+        if(prevTriggerPressDuration < 1f && 1f <= triggerPressDuration){
+            // 緑一色モード，{発動/停止}ッ！！！
+            plem.isEffectActive = !plem.isEffectActive;
         }
     }
 
