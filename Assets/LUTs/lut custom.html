@@ -75,8 +75,8 @@
             const t = Math.max(0, Math.min(1, .5-x*9));
 
             [data[i], data[i + 1], data[i + 2]] = [
-              t * r,
-              t * g,//(g*1.2+(r+b)*.1)+.1,
+              lerp(t * r, 255, 4/255),
+              lerp(t * g, 255, 20/255),//(g*1.2+(r+b)*.1)+.1,
               t * b,
             ];
           }
