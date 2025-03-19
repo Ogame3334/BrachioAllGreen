@@ -11,6 +11,13 @@ public class QvPen : MonoBehaviour
     private List<GameObject> _trailObjects = new List<GameObject>();
     private GameObject _trailObject = null;
 
+    public void SetQvPenActive(bool cond){
+        foreach(var obj in _trailObjects){
+            obj.SetActive(cond);
+        }
+        gameObject.SetActive(cond);
+    }
+
     public void StartDraw(){
         if(_trailObject is not null) return;
         _trailObject = Instantiate(_trailPrefabs, _penNibTransform);
@@ -30,6 +37,7 @@ public class QvPen : MonoBehaviour
     }
 
     public void Undo(){
+        if(_trailObjects.Count == 0) return;
         Destroy(_trailObjects[_trailObjects.Count - 1]);
         _trailObjects.RemoveAt(_trailObjects.Count - 1);
     }
